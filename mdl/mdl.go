@@ -1,16 +1,14 @@
 package mdl
 
-import "time"
+import (
+	"time"
+	//valid "github.com/asaskevich/govalidator"
+	)
 
 type Feed struct {
 	SID string `json:"sid" bson:"sid" binding:"required"` // Slot ID
 	CID string `json:"cid" bson:"cid" binding:"required"` // Channel ID
 	URL string `json:"url" bson:"url" binding:"required"` // URL of podcast channel
-}
-
-type FeedClient struct {
-	SID string `json:"sid" bson:"sid" binding:"required"` // Slot ID
-	CID string `json:"cid" bson:"cid" binding:"required"` // Channel ID
 }
 
 type Channel struct {
