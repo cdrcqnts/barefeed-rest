@@ -2,13 +2,14 @@ package ctrl
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
 )
 
+
+// DELETE "feeds/:sid"
 func DeleteSlot(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
@@ -40,6 +41,10 @@ func DeleteFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"success": fmt.Sprint("Deleted entry with SID %x, CID %y", sid, cid)})
+		res := struct {
+			SID string `json:"sid"`
+			CID string `json:"cid"`
+		}{SID: sid, CID: cid,}
+		c.JSON(http.StatusOK, gin.H{"success": res})
 	}
 }

@@ -34,11 +34,11 @@ func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
-		res := struct {
-			SID string `json:"sid"`
-			CID string `json:"cid"`
-		}{SID: feed.SID, CID: feed.CID,}
-		c.JSON(http.StatusOK, gin.H{"success": res})
+		cnl, err := FeedToChannel(feed); if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"success": cnl})
 	}
 }
 
@@ -86,10 +86,10 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		res := struct {
-			SID string `json:"sid"`
-			CID string `json:"cid"`
-		}{SID: feed.SID, CID: feed.CID,}
-		c.JSON(http.StatusOK, gin.H{"success": res})
+		cnl, err := FeedToChannel(feed); if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"success": cnl})
 	}
 }

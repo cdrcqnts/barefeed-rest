@@ -1,7 +1,7 @@
 package main
 
 import (
-	valid "github.com/asaskevich/govalidator"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/subosito/gotenv"
 	"go-mongo/ctrl"
@@ -14,16 +14,21 @@ func init() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	valid.SetFieldsRequiredByDefault(true)
 }
 
 func main() {
 	r := gin.Default()
 	db := driver.ConnectDB()
 
+	// CORS Middleware
+	cfg := cors.DefaultConfig()
+	cfg.AllowOrigins = []string{"http://localhost:1234"}
+	// config.AllowOrigins == []string{"http://google.com", "http://facebook.com"}
+	r.Use(cors.New(cfg))
+
 	r.POST("/feeds", ctrl.NewSlotNewFeed(db))
 	r.POST("/feeds/:sid", ctrl.OldSlotNewFeed(db))
-	r.GET("feeds/:sid", ctrl.GetCIDs(db))
+	r.GET("feeds/:sid", ctrl.GetFeeds(db))
 	r.DELETE("feeds/:sid", ctrl.DeleteSlot(db))
 	r.GET("feeds/:sid/:cid", ctrl.GetFeed(db))
 	r.DELETE("feeds/:sid/:cid", ctrl.DeleteFeed(db))

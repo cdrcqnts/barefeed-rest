@@ -3,7 +3,7 @@ package mdl
 import (
 	"time"
 	//valid "github.com/asaskevich/govalidator"
-	)
+)
 
 type Feed struct {
 	SID string `json:"sid" bson:"sid" binding:"required"` // Slot ID
@@ -19,7 +19,8 @@ type Channel struct {
 	Title       string    `json:"name"`
 	Description string    `json:"description"`
 	Updated     time.Time `json:"updated"`
-	Podcasts    []Podcast
+	Image       string    `json:"image"`
+	Podcasts    []Podcast `json:"podcasts"`
 	//Image Base64 string
 }
 
@@ -29,4 +30,5 @@ type Podcast struct {
 	Description string    `json:"description"`
 	Duration    string    `json:"duration"`
 	Released    time.Time `json:"released"`
+	Image       string    `json:"image"`
 }
