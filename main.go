@@ -4,8 +4,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/subosito/gotenv"
-	"go-mongo/ctrl"
-	"go-mongo/driver"
+	"poasy-rest/ctrl"
+	"poasy-rest/driver"
 	"log"
 )
 

@@ -16,7 +16,7 @@ type Channel struct {
 	CID         string    `json:"cid"`
 	Url         string    `json:"url"`
 	Web         string    `json:"web"`
-	Title       string    `json:"name"`
+	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Updated     time.Time `json:"updated"`
 	Image       string    `json:"image"`

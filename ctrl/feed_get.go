@@ -2,10 +2,12 @@ package ctrl
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/mmcdole/gofeed"
-	"go-mongo/cnt"
-	"go-mongo/mdl"
+	"poasy-rest/cnt"
+	"poasy-rest/mdl"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
@@ -18,7 +20,7 @@ func GetFeeds(db *mongo.Collection) gin.HandlerFunc {
 		sid := c.Param("sid")
 		feeds, err := GetURLs(db, sid)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		cnls, err := FeedsToChannels(feeds)
@@ -79,7 +81,10 @@ func GetURLs(db *mongo.Collection, sid string) ([]*mdl.Feed, error) {
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	if len(res) > 0 {
+		return res, nil
+	}
+	return nil, errors.New(fmt.Sprint("Could not find slot with id: ", sid))
 }
 
 func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {

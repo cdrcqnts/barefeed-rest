@@ -3,7 +3,7 @@ package aux
 import (
 	"errors"
 	"github.com/mmcdole/gofeed"
-	"go-mongo/cnt"
+	"poasy-rest/cnt"
 	"strings"
 )
 
