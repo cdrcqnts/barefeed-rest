@@ -13,9 +13,12 @@ func UrlIsAudioFeed(url string) error {
 	if err != nil {
 		return errors.New(cnt.ErrParseURL)
 	}
-	if len(feed.Items) > 0 && len(feed.Items[0].Enclosures) > 0 && len(feed.Items[0].Enclosures[0].URL) > 0  {
+	i := feed.Items
+	e := feed.Items[0].Enclosures
+	u := feed.Items[0].Enclosures[0].URL
+	if len(i) > 0 && len(e) > 0 && len(u) > 0  {
 		for _, af := range cnt.AUDIO_FORMATS {
-			if strings.HasSuffix(feed.Items[0].Enclosures[0].URL, af) {
+			if strings.HasSuffix(u, af) {
 				return nil
 			}
 		}
