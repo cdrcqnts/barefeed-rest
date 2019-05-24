@@ -1,12 +1,15 @@
 package aux
 
 import (
+	"barefeed-rest/cnt"
+	"barefeed-rest/mdl"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/mmcdole/gofeed"
-	"barefeed-rest/cnt"
-	"barefeed-rest/mdl"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -20,7 +23,7 @@ func UrlIsAudioFeed(url string) error {
 	i := feed.Items
 	e := feed.Items[0].Enclosures
 	u := feed.Items[0].Enclosures[0].URL
-	if len(i) > 0 && len(e) > 0 && len(u) > 0  {
+	if len(i) > 0 && len(e) > 0 && len(u) > 0 {
 		for _, af := range cnt.AUDIO_FORMATS {
 			if strings.HasSuffix(u, af) {
 				return nil
@@ -29,7 +32,6 @@ func UrlIsAudioFeed(url string) error {
 	}
 	return errors.New(cnt.ErrNoAudioFile)
 }
-
 
 func GetURLs(db *mongo.Collection, sid string) ([]*mdl.Feed, error) {
 	var res []*mdl.Feed
@@ -75,6 +77,7 @@ func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
 			Duration:    "-",
 			Released:    dayZero,
 			Image:       "",
+			Size:        0,
 		}
 		if len(i.Title) > 0 {
 			p.Title = i.Title
@@ -91,6 +94,10 @@ func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
 		if len(i.Enclosures) > 0 {
 			if len(i.Enclosures[0].URL) > 0 {
 				p.Url = i.Enclosures[0].URL
+			}
+			if len(i.Enclosures[0].Length) > 0 {
+				i, _ := strconv.Atoi(i.Enclosures[0].Length)
+				p.Size = i
 			}
 		}
 		if i.ITunesExt != nil {

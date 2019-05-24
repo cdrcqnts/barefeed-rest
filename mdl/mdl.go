@@ -30,4 +30,5 @@ type Podcast struct {
 	Duration    string    `json:"duration"`
 	Released    time.Time `json:"released"`
 	Image       string    `json:"image"`
+	Size        int       `json:"size"`
 }
