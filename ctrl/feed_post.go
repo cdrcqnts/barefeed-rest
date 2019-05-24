@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/xid"
-	"poasy-rest/aux"
-	"poasy-rest/cnt"
-	"poasy-rest/mdl"
+	"barefeed-rest/aux"
+	"barefeed-rest/cnt"
+	"barefeed-rest/mdl"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
@@ -34,7 +34,7 @@ func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
-		cnl, err := FeedToChannel(feed); if err != nil {
+		cnl, err := aux.FeedToChannel(feed); if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
@@ -53,10 +53,16 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		// check if url is a valid feed address
+		err := aux.UrlIsAudioFeed(feed.URL)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 		// check if an entry with given SID exists
 		var foundFeed mdl.Feed
 		filter := bson.D{{"sid", sid}}
-		err := db.FindOne(context.TODO(), filter).Decode(&foundFeed)
+		err = db.FindOne(context.TODO(), filter).Decode(&foundFeed)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": cnt.ErrInvalidSID})
 			return
@@ -74,19 +80,14 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": cnt.ErrUrlExists})
 			return
 		}
-		// check if url is a valid feed address
-		err = aux.UrlIsAudioFeed(feed.URL)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
+
 		// insert new entry with fresh CID
 		_, err = db.InsertOne(context.TODO(), feed)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		cnl, err := FeedToChannel(feed); if err != nil {
+		cnl, err := aux.FeedToChannel(feed); if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}

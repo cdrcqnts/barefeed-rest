@@ -21,7 +21,6 @@ type Channel struct {
 	Updated     time.Time `json:"updated"`
 	Image       string    `json:"image"`
 	Podcasts    []Podcast `json:"podcasts"`
-	//Image Base64 string
 }
 
 type Podcast struct {
