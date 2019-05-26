@@ -5,9 +5,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"github.com/gin-gonic/gin"
-	"barefeed-rest/aux"
-	"barefeed-rest/cnt"
-	"barefeed-rest/mdl"
+	aux "barefeed-rest/aux"
+	cnt "barefeed-rest/cnt"
+	mdl "barefeed-rest/mdl"
 	"net/http"
 )
 

@@ -1,8 +1,8 @@
 package aux
 
 import (
-	"barefeed-rest/cnt"
-	"barefeed-rest/mdl"
+	cnt "barefeed-rest/cnt"
+	mdl "barefeed-rest/mdl"
 	"context"
 	"errors"
 	"fmt"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"barefeed-rest/ctrl"
-	"barefeed-rest/driver"
+	ctrl "barefeed-rest/ctrl"
+	driver "barefeed-rest/driver"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

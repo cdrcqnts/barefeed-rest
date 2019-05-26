@@ -1,4 +1,4 @@
-module go-mongo
+module github.com/cdrcqnts/barefeed-rest
 
 go 1.12
 
