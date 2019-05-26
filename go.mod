@@ -1,4 +1,4 @@
-module github.com/cdrcqnts/barefeed-rest
+module barefeed-rest
 
 go 1.12
 
