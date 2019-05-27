@@ -26,5 +26,10 @@ MONGO_COLLECTION=<COLLECTION NAME>
 go run main.go 
 ```
 
+### TODO
+- Endpoint POST `/feeds` to insert multiple feeds (restore feeds from file)
+- Generate thumbnail images for feeds and podcasts
+
+
 #### License
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/cdrcqnts/barefeed/blob/master/LICENSE) file for details.
