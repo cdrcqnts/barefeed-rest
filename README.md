@@ -10,6 +10,16 @@ The key is mapped as a parameter to the url. All further feeds added by the user
 Barefeed therefore does not require any personal user data. 
 No cookies are stored, the data is queried exclusively on the basis of the URL parameter key.
 
+### Prerequisites
+Set the environment variables in file `.env` in the projects root dir.
+```
+URL_SERVER=<URL OF CLIENT APP>
+MONGO_URL=<URL OF MONGO DB>
+MONGO_DB=<DB NAME>
+MONGO_COLLECTION=<COLLECTION NAME>
+```
+
+
 ### Run
 ```
 // Serves the project at localhost:8080
