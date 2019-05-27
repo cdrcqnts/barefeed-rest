@@ -24,16 +24,20 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set.")
 	}
-	client := os.Getenv("CLIENT_URL")
-	if client == "" {
-		log.Fatal("$CLIENT_URL must be set.")
+	client1 := os.Getenv("URL_LOCAL")
+	if client1 == "" {
+		log.Fatal("$URL_LOCAL must be set.")
+	}
+	client2 := os.Getenv("URL_SERVER")
+	if client2 == "" {
+		log.Fatal("$URL_SERVER must be set.")
 	}
 	r := gin.Default()
 	db := driver.ConnectDB()
 
 	// CORS Middleware
 	cfg := cors.DefaultConfig()
-	cfg.AllowOrigins = []string{client}
+	cfg.AllowOrigins = []string{client1, client2}
 	// config.AllowOrigins == []string{"http://google.com", "http://facebook.com"}
 	r.Use(cors.New(cfg))
 
