@@ -18,6 +18,8 @@ func init() {
 	}
 }
 
+// URL_SERVER=https://musing-borg-502f37.netlify.com
+
 func main() {
 	fmt.Println(os.Environ())
 	port := os.Getenv("PORT")

@@ -9,6 +9,10 @@ import (
 	"os"
 )
 
+// MONGO_URL=mongodb://go:test1234@ds149706.mlab.com:49706/go-test
+// MONGO_DB=go-test
+// MONGO_COLLECTION=slots
+
 func ConnectDB() *mongo.Collection {
 	fmt.Println("Starting server...")
 	url := os.Getenv("MONGO_URL")
