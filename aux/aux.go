@@ -6,12 +6,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/mmcdole/gofeed"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/mmcdole/gofeed"
+	"github.com/rs/xid"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func UrlIsAudioFeed(url string) error {
@@ -71,6 +73,7 @@ func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
 	dayZero := time.Date(0, time.January, 1, 1, 0, 0, 0, time.UTC)
 	for _, i := range feedRaw.Items {
 		p := mdl.Podcast{
+			PID:         xid.New().String(),
 			Url:         "-",
 			Title:       "-",
 			Description: "-",

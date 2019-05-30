@@ -1,15 +1,16 @@
 package ctrl
 
 import (
-	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/rs/xid"
 	aux "barefeed-rest/aux"
 	cnt "barefeed-rest/cnt"
 	mdl "barefeed-rest/mdl"
+	"context"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/rs/xid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"net/http"
 )
 
 // POST "/feeds"
@@ -34,7 +35,8 @@ func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
-		cnl, err := aux.FeedToChannel(feed); if err != nil {
+		cnl, err := aux.FeedToChannel(feed)
+		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
@@ -87,7 +89,8 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		cnl, err := aux.FeedToChannel(feed); if err != nil {
+		cnl, err := aux.FeedToChannel(feed)
+		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}

@@ -2,7 +2,6 @@ package mdl
 
 import (
 	"time"
-	//valid "github.com/asaskevich/govalidator"
 )
 
 type Feed struct {
@@ -24,6 +23,7 @@ type Channel struct {
 }
 
 type Podcast struct {
+	PID         string    `json:"pid"`
 	Url         string    `json:"url"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`

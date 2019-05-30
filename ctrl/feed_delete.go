@@ -2,12 +2,12 @@ package ctrl
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"net/http"
 )
-
 
 // DELETE "feeds/:sid"
 func DeleteSlot(db *mongo.Collection) gin.HandlerFunc {
@@ -44,7 +44,7 @@ func DeleteFeed(db *mongo.Collection) gin.HandlerFunc {
 		res := struct {
 			SID string `json:"sid"`
 			CID string `json:"cid"`
-		}{SID: sid, CID: cid,}
+		}{SID: sid, CID: cid}
 		c.JSON(http.StatusOK, gin.H{"success": res})
 	}
 }
