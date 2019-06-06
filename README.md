@@ -13,7 +13,7 @@ No cookies are stored, the data is queried exclusively on the basis of the URL p
 ### Prerequisites
 Set the environment variables in file `.env` in the projects root dir.
 ```
-URL_SERVER=<URL OF CLIENT APP>
+CLIENT=<URL OF CLIENT APP>
 MONGO_URL=<URL OF MONGO DB>
 MONGO_DB=<DB NAME>
 MONGO_COLLECTION=<COLLECTION NAME>
@@ -27,8 +27,9 @@ go run main.go
 ```
 
 ### TODO
-- Endpoint POST `/feeds` to insert multiple feeds (restore feeds from file)
-- Generate thumbnail images for feeds and podcasts
+- Middleware request limit
+- Crawl domain for feeds if search term is not a feed URL
+- If crawling is successful, return list of available feeds
 
 
 #### License

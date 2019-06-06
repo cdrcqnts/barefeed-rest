@@ -35,8 +35,9 @@ func main() {
 	// CORS Middleware
 	cfg := cors.DefaultConfig()
 	cfg.AllowOrigins = []string{client}
-	// config.AllowOrigins == []string{"http://google.com", "http://facebook.com"}
 	r.Use(cors.New(cfg))
+
+	// TODO: Middeware for request limit
 
 	r.POST("/feeds", ctrl.NewSlotNewFeed(db))
 	r.POST("/feeds/:sid", ctrl.OldSlotNewFeed(db))
