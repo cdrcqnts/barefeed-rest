@@ -12,7 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// GET "feeds/:sid"
+// GetFeeds returns the content of all feeds corresponding to the sid specified in the URL parameter
+// Endpoint: GET "feeds/:sid"
 func GetFeeds(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
@@ -30,7 +31,8 @@ func GetFeeds(db *mongo.Collection) gin.HandlerFunc {
 	}
 }
 
-// GET "feeds/:sid/:cid"
+// GetFeed returns the content of the feed corresponding to the sid and the cid specified in the URL parameter
+// Endpoint: GET "feeds/:sid/:cid"
 func GetFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")

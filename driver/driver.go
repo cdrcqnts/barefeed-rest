@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// ConnectDB returns the MongoDB collection object which
+// is used to execute all database queries.
 func ConnectDB() *mongo.Collection {
 	fmt.Println("Starting server...")
 	url := os.Getenv("MONGO_URL")

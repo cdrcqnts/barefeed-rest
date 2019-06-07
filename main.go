@@ -12,6 +12,7 @@ import (
 	"github.com/subosito/gotenv"
 )
 
+// init loads the environment variables from .env before main() is  executed
 func init() {
 	err := gotenv.Load()
 	if err != nil {
@@ -19,6 +20,8 @@ func init() {
 	}
 }
 
+// main is the application entry point
+// run `go run main.go` to start the server
 func main() {
 	fmt.Println(os.Environ())
 	port := os.Getenv("PORT")

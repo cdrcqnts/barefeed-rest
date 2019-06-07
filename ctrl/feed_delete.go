@@ -9,7 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// DELETE "feeds/:sid"
+// DeleteSlot returns the sid after deleting all entries containing the sid
+// Endpoint: DELETE "feeds/:sid"
 func DeleteSlot(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
@@ -24,7 +25,8 @@ func DeleteSlot(db *mongo.Collection) gin.HandlerFunc {
 	}
 }
 
-// DELETE "feeds/:sid/:cid"
+// DeleteFeed returns the deleted feeds sid and cid
+// Endpoint: DELETE "feeds/:sid/:cid"
 func DeleteFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")

@@ -13,7 +13,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// POST "/feeds"
+// NewSlotNewFeed returns the content of a feed given a feed URL
+// and adds the feed URL with a fresh sid and a fresh cid to the database.
+// Endpoint: POST "/feeds"
 func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := xid.New().String()
@@ -44,7 +46,9 @@ func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 	}
 }
 
-// POST "/feeds/:sid"
+// OldSlotNewFeed returns the content of a feed given a feed URL
+// and adds the feed URL with a given sid and a fresh cid to the database.
+// Endpoint: POST "/feeds/:sid"
 func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
