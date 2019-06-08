@@ -32,12 +32,16 @@ func main() {
 	if client == "" {
 		log.Fatal("$CLIENT must be set.")
 	}
+	clientLocal := os.Getenv("CLIENT_LOCAL")
+	if clientLocal == "" {
+		log.Fatal("$CLIENT_LOCAL must be set.")
+	}
 	r := gin.Default()
 	db := driver.ConnectDB()
 
 	// CORS Middleware
 	cfg := cors.DefaultConfig()
-	cfg.AllowOrigins = []string{client}
+	cfg.AllowOrigins = []string{client, clientLocal}
 	r.Use(cors.New(cfg))
 
 	// TODO: Middeware for request limit
