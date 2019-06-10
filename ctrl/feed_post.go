@@ -20,24 +20,24 @@ func NewSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := xid.New().String()
 		cid := xid.New().String()
-		feed := mdl.Feed{SID: sid, CID: cid}
+		link := mdl.Link{SID: sid, CID: cid}
 		// check if request body format is correct
-		if err := c.ShouldBindJSON(&feed); err != nil {
+		if err := c.ShouldBindJSON(&link); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		// check if url is a valid feed address
-		err := aux.UrlIsAudioFeed(feed.URL)
+		err := aux.UrlIsAudioFeed(link.URL)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		_, err = db.InsertOne(context.TODO(), feed)
+		_, err = db.InsertOne(context.TODO(), link)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
 		}
-		cnl, err := aux.FeedToChannel(feed)
+		cnl, err := aux.LinkToFeed(link)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return
@@ -53,22 +53,22 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
 		cid := xid.New().String()
-		feed := mdl.Feed{SID: sid, CID: cid}
+		link := mdl.Link{SID: sid, CID: cid}
 		// check if request body format is correct
-		if err := c.ShouldBindJSON(&feed); err != nil {
+		if err := c.ShouldBindJSON(&link); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		// check if url is a valid feed address
-		err := aux.UrlIsAudioFeed(feed.URL)
+		err := aux.UrlIsAudioFeed(link.URL)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 		// check if an entry with given SID exists
-		var foundFeed mdl.Feed
+		var foundLink mdl.Link
 		filter := bson.D{{"sid", sid}}
-		err = db.FindOne(context.TODO(), filter).Decode(&foundFeed)
+		err = db.FindOne(context.TODO(), filter).Decode(&foundLink)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": cnt.ErrInvalidSID})
 			return
@@ -78,22 +78,22 @@ func OldSlotNewFeed(db *mongo.Collection) gin.HandlerFunc {
 			{"$and",
 				bson.A{
 					bson.D{{"sid", sid}},
-					bson.D{{"url", feed.URL}},
+					bson.D{{"url", link.URL}},
 				}},
 		}
-		err = db.FindOne(context.TODO(), filter).Decode(&foundFeed)
+		err = db.FindOne(context.TODO(), filter).Decode(&foundLink)
 		if err == nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": cnt.ErrUrlExists})
 			return
 		}
 
 		// insert new entry with fresh CID
-		_, err = db.InsertOne(context.TODO(), feed)
+		_, err = db.InsertOne(context.TODO(), link)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		cnl, err := aux.FeedToChannel(feed)
+		cnl, err := aux.LinkToFeed(link)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 			return

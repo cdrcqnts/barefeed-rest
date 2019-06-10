@@ -17,12 +17,12 @@ import (
 func GetFeeds(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
-		feeds, err := aux.GetURLs(db, sid)
+		links, err := aux.GetLinks(db, sid)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		cnls, err := aux.FeedsToChannels(feeds)
+		cnls, err := aux.LinksToFeeds(links)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -37,7 +37,7 @@ func GetFeed(db *mongo.Collection) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sid := c.Param("sid")
 		cid := c.Param("cid")
-		feed := mdl.Feed{SID: sid, CID: cid}
+		feed := mdl.Link{SID: sid, CID: cid}
 		filter := bson.D{
 			{"$and",
 				bson.A{
@@ -50,7 +50,7 @@ func GetFeed(db *mongo.Collection) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": cnt.ErrSIDCIDNotFound})
 			return
 		}
-		cnl, err := aux.FeedToChannel(feed)
+		cnl, err := aux.LinkToFeed(feed)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

@@ -3,7 +3,6 @@ package main
 import (
 	ctrl "barefeed-rest/ctrl"
 	driver "barefeed-rest/driver"
-	"fmt"
 	"log"
 	"os"
 
@@ -23,7 +22,7 @@ func init() {
 // main is the application entry point
 // run `go run main.go` to start the server
 func main() {
-	fmt.Println(os.Environ())
+	// fmt.Println(os.Environ())
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("$PORT must be set.")

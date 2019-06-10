@@ -36,16 +36,16 @@ func UrlIsAudioFeed(url string) error {
 	return errors.New(cnt.ErrNoAudioFile)
 }
 
-// GetURLs returns a list of all feeds for a given sid
-func GetURLs(db *mongo.Collection, sid string) ([]*mdl.Feed, error) {
-	var res []*mdl.Feed
+// GetLinks returns a list of all links for a given sid
+func GetLinks(db *mongo.Collection, sid string) ([]*mdl.Link, error) {
+	var res []*mdl.Link
 	filter := bson.D{{"sid", sid}}
 	cur, err := db.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
 	for cur.Next(context.TODO()) {
-		var f mdl.Feed
+		var f mdl.Link
 		err := cur.Decode(&f)
 		if err != nil {
 			return nil, err
@@ -65,10 +65,10 @@ func GetURLs(db *mongo.Collection, sid string) ([]*mdl.Feed, error) {
 	return nil, errors.New(fmt.Sprint("Could not find slot with id: ", sid))
 }
 
-// FeedToChannel returns the content of a feed given a feed URL
-func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
+// LinkToFeed returns the content of a feed given a feed URL
+func LinkToFeed(l mdl.Link) (*mdl.Channel, error) {
 	fp := gofeed.NewParser()
-	feedRaw, err := fp.ParseURL(feed.URL)
+	feedRaw, err := fp.ParseURL(l.URL)
 	if err != nil {
 		return nil, err
 	}
@@ -119,9 +119,9 @@ func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
 		ps = append(ps, p)
 	}
 	cnl := mdl.Channel{
-		CID:         feed.CID,
-		SID:         feed.SID,
-		Url:         feed.URL,
+		CID:         l.CID,
+		SID:         l.SID,
+		Url:         l.URL,
 		Web:         "",
 		Title:       "-",
 		Description: "-",
@@ -152,11 +152,11 @@ func FeedToChannel(feed mdl.Feed) (*mdl.Channel, error) {
 	return &cnl, nil
 }
 
-// FeedsToChannels returns the content of a list of feeds given a list of feed URLs
-func FeedsToChannels(feeds []*mdl.Feed) ([]*mdl.Channel, error) {
+// LinksToFeeds returns a list of feeds given a list of links.
+func LinksToFeeds(links []*mdl.Link) ([]*mdl.Channel, error) {
 	var res []*mdl.Channel
-	for _, f := range feeds {
-		c, err := FeedToChannel(*f)
+	for _, f := range links {
+		c, err := LinkToFeed(*f)
 		if err != nil {
 			return nil, err
 		}

@@ -4,14 +4,15 @@ import (
 	"time"
 )
 
-// Feed provides the schema by which URLs are saved in the database
-type Feed struct {
+// Link provides the schema by which URLs are saved in the database
+type Link struct {
 	SID string `json:"sid" bson:"sid" binding:"required"` // Slot ID
 	CID string `json:"cid" bson:"cid" binding:"required"` // Channel ID
 	URL string `json:"url" bson:"url" binding:"required"` // URL of podcast channel
 }
 
 // Channel provides the schema by which feed content is delivered to the client
+// TODO: rename to Feed
 type Channel struct {
 	SID         string    `json:"sid"`
 	CID         string    `json:"cid"`
