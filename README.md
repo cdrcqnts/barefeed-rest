@@ -28,8 +28,7 @@ go run main.go
 
 ### TODO
 - Middleware request limit
-- Crawl domain for feeds if search term is not a feed URL but the domain itself is valid
-- If crawling is successful, return list of available feeds
+- Feed recommendation by keywords
 
 
 #### License
