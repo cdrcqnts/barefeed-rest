@@ -1,6 +1,6 @@
 package constants
 
-// Common error messages
+// Error messages
 const (
 	ErrInvalidSID     = "Invalid SID."
 	ErrUrlExists      = "This URL already exists for the slot you use."

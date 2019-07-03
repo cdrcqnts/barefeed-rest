@@ -1,6 +1,5 @@
 package main
 
-// FIXME: prefix with github
 import (
 	"log"
 	"os"
@@ -48,13 +47,16 @@ func main() {
 
 	// TODO: Middeware for request limit
 
-	r.GET("/ping", ping.Ping())
-	r.POST("/feeds", feeds.NewSlotNewFeed(db))
-	r.POST("/feeds/:sid", feeds.OldSlotNewFeed(db))
-	r.GET("feeds/:sid", feeds.GetFeeds(db))
-	r.DELETE("feeds/:sid", feeds.DeleteSlot(db))
-	r.GET("feeds/:sid/:cid", feeds.GetFeed(db))
-	r.DELETE("feeds/:sid/:cid", feeds.DeleteFeed(db))
+	v1 := r.Group("/v1")
+	{
+		v1.GET("/ping", ping.Ping())
+		v1.POST("/feeds", feeds.NewSlotNewFeed(db))
+		v1.POST("/feeds/:sid", feeds.OldSlotNewFeed(db))
+		v1.GET("feeds/:sid", feeds.GetFeeds(db))
+		v1.DELETE("feeds/:sid", feeds.DeleteSlot(db))
+		v1.GET("feeds/:sid/:cid", feeds.GetFeed(db))
+		v1.DELETE("feeds/:sid/:cid", feeds.DeleteFeed(db))
+	}
 
 	err := r.Run(":" + port)
 	if err != nil {

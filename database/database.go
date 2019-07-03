@@ -10,12 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// FIXME: terminate before service shuts down
-
 // Connect returns the MongoDB collection object which
 // is used to execute all database queries.
 func Connect() *mongo.Collection {
 	fmt.Println("Starting server...")
+	// TODO: restructure, use YAML instead of .env
 	url := os.Getenv("MONGO_URL")
 	if url == "" {
 		log.Fatal("$MONGO_URL must be set.")
