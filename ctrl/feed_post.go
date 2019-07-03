@@ -1,11 +1,12 @@
 package ctrl
 
 import (
-	aux "barefeed-rest/aux"
-	cnt "barefeed-rest/cnt"
-	mdl "barefeed-rest/mdl"
 	"context"
 	"net/http"
+
+	"github.com/cdrcqnts/barefeed-rest/aux"
+	"github.com/cdrcqnts/barefeed-rest/cnt"
+	"github.com/cdrcqnts/barefeed-rest/mdl"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/xid"

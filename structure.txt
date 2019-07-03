@@ -1,0 +1,12 @@
+
+main.go
+boot
+    boot.go # func start() -> db.connect(), settings.load()
+            # Run(), exec in main.go
+api
+    types
+    v1
+        (file) v1.go setup all routes in groups, groups by folder names
+        (folder) ping # endpoint c.JSON
+    
+database

@@ -1,10 +1,12 @@
 package main
 
+// FIXME: prefix with github
 import (
-	ctrl "barefeed-rest/ctrl"
-	driver "barefeed-rest/driver"
 	"log"
 	"os"
+
+	"github.com/cdrcqnts/barefeed-rest/ctrl"
+	"github.com/cdrcqnts/barefeed-rest/driver"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,8 @@ import (
 )
 
 // init loads the environment variables from .env before main() is  executed
+
+// TODO remove, not needed!
 func init() {
 	err := gotenv.Load()
 	if err != nil {
@@ -22,6 +26,7 @@ func init() {
 // main is the application entry point
 // run `go run main.go` to start the server
 func main() {
+	// FIXME: USE YAML, OCCAMY for config
 	// fmt.Println(os.Environ())
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -31,17 +36,14 @@ func main() {
 	if client == "" {
 		log.Fatal("$CLIENT must be set.")
 	}
-	clientLocal := os.Getenv("CLIENT_LOCAL")
-	if clientLocal == "" {
-		log.Fatal("$CLIENT_LOCAL must be set.")
-	}
 	r := gin.Default()
+	// FIXME: turn into global variable
 	db := driver.ConnectDB()
 
 	// CORS Middleware
-	cfg := cors.DefaultConfig()
-	cfg.AllowOrigins = []string{client, clientLocal}
-	r.Use(cors.New(cfg))
+	corsCfg := cors.DefaultConfig()
+	corsCfg.AllowOrigins = []string{client}
+	r.Use(cors.New(corsCfg))
 
 	// TODO: Middeware for request limit
 

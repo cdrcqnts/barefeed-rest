@@ -14,25 +14,25 @@ type Link struct {
 // Channel provides the schema by which feed content is delivered to the client
 // TODO: rename to Feed
 type Channel struct {
+	Updated     time.Time `json:"updated"`
 	SID         string    `json:"sid"`
 	CID         string    `json:"cid"`
 	Url         string    `json:"url"`
 	Web         string    `json:"web"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
-	Updated     time.Time `json:"updated"`
 	Image       string    `json:"image"`
 	Podcasts    []Podcast `json:"podcasts"`
 }
 
 // Podcast is contained by Channel
 type Podcast struct {
+	Size        int       `json:"size"`
+	Released    time.Time `json:"released"`
 	PID         string    `json:"pid"`
 	Url         string    `json:"url"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Duration    string    `json:"duration"`
-	Released    time.Time `json:"released"`
 	Image       string    `json:"image"`
-	Size        int       `json:"size"`
 }

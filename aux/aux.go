@@ -1,8 +1,8 @@
 package aux
 
 import (
-	cnt "barefeed-rest/cnt"
-	mdl "barefeed-rest/mdl"
+	cnt "github.com/cdrcqnts/barefeed-rest/cnt"
+	mdl "github.com/cdrcqnts/barefeed-rest/mdl"
 	"context"
 	"errors"
 	"fmt"
@@ -36,6 +36,7 @@ func UrlIsAudioFeed(url string) error {
 	return errors.New(cnt.ErrNoAudioFile)
 }
 
+// FIXME: use context.Context as parameter, pass context.Background from
 // GetLinks returns a list of all links for a given sid
 func GetLinks(db *mongo.Collection, sid string) ([]*mdl.Link, error) {
 	var res []*mdl.Link

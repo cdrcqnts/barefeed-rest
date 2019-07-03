@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// FIXME: terminate before service shuts down
+
 // ConnectDB returns the MongoDB collection object which
 // is used to execute all database queries.
 func ConnectDB() *mongo.Collection {
