@@ -5,8 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/cdrcqnts/barefeed-rest/ctrl"
-	"github.com/cdrcqnts/barefeed-rest/driver"
+	"github.com/cdrcqnts/barefeed-rest/api/v1/feeds"
+	"github.com/cdrcqnts/barefeed-rest/api/v1/ping"
+	"github.com/cdrcqnts/barefeed-rest/database"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -38,7 +39,7 @@ func main() {
 	}
 	r := gin.Default()
 	// FIXME: turn into global variable
-	db := driver.ConnectDB()
+	db := database.Connect()
 
 	// CORS Middleware
 	corsCfg := cors.DefaultConfig()
@@ -47,12 +48,13 @@ func main() {
 
 	// TODO: Middeware for request limit
 
-	r.POST("/feeds", ctrl.NewSlotNewFeed(db))
-	r.POST("/feeds/:sid", ctrl.OldSlotNewFeed(db))
-	r.GET("feeds/:sid", ctrl.GetFeeds(db))
-	r.DELETE("feeds/:sid", ctrl.DeleteSlot(db))
-	r.GET("feeds/:sid/:cid", ctrl.GetFeed(db))
-	r.DELETE("feeds/:sid/:cid", ctrl.DeleteFeed(db))
+	r.GET("/ping", ping.Ping())
+	r.POST("/feeds", feeds.NewSlotNewFeed(db))
+	r.POST("/feeds/:sid", feeds.OldSlotNewFeed(db))
+	r.GET("feeds/:sid", feeds.GetFeeds(db))
+	r.DELETE("feeds/:sid", feeds.DeleteSlot(db))
+	r.GET("feeds/:sid/:cid", feeds.GetFeed(db))
+	r.DELETE("feeds/:sid/:cid", feeds.DeleteFeed(db))
 
 	err := r.Run(":" + port)
 	if err != nil {

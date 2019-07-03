@@ -1,14 +1,15 @@
 package aux
 
 import (
-	cnt "github.com/cdrcqnts/barefeed-rest/cnt"
-	mdl "github.com/cdrcqnts/barefeed-rest/mdl"
 	"context"
 	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/cdrcqnts/barefeed-rest/api/types"
+	"github.com/cdrcqnts/barefeed-rest/constants"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/rs/xid"
@@ -21,32 +22,32 @@ func UrlIsAudioFeed(url string) error {
 	fp := gofeed.NewParser()
 	feed, err := fp.ParseURL(url)
 	if err != nil {
-		return errors.New(cnt.ErrParseURL)
+		return errors.New(constants.ErrParseURL)
 	}
 	i := feed.Items
 	e := feed.Items[0].Enclosures
 	u := feed.Items[0].Enclosures[0].URL
 	if len(i) > 0 && len(e) > 0 && len(u) > 0 {
-		for _, af := range cnt.AUDIO_FORMATS {
+		for _, af := range constants.AUDIO_FORMATS {
 			if strings.HasSuffix(u, af) {
 				return nil
 			}
 		}
 	}
-	return errors.New(cnt.ErrNoAudioFile)
+	return errors.New(constants.ErrNoAudioFile)
 }
 
 // FIXME: use context.Context as parameter, pass context.Background from
 // GetLinks returns a list of all links for a given sid
-func GetLinks(db *mongo.Collection, sid string) ([]*mdl.Link, error) {
-	var res []*mdl.Link
+func GetLinks(db *mongo.Collection, sid string) ([]*types.Link, error) {
+	var res []*types.Link
 	filter := bson.D{{"sid", sid}}
 	cur, err := db.Find(context.TODO(), filter)
 	if err != nil {
 		return nil, err
 	}
 	for cur.Next(context.TODO()) {
-		var f mdl.Link
+		var f types.Link
 		err := cur.Decode(&f)
 		if err != nil {
 			return nil, err
@@ -67,16 +68,16 @@ func GetLinks(db *mongo.Collection, sid string) ([]*mdl.Link, error) {
 }
 
 // LinkToFeed returns the content of a feed given a feed URL
-func LinkToFeed(l mdl.Link) (*mdl.Channel, error) {
+func LinkToFeed(l types.Link) (*types.Channel, error) {
 	fp := gofeed.NewParser()
 	feedRaw, err := fp.ParseURL(l.URL)
 	if err != nil {
 		return nil, err
 	}
-	ps := []mdl.Podcast{}
+	ps := []types.Podcast{}
 	dayZero := time.Date(0, time.January, 1, 1, 0, 0, 0, time.UTC)
 	for _, i := range feedRaw.Items {
-		p := mdl.Podcast{
+		p := types.Podcast{
 			PID:         xid.New().String(),
 			Url:         "-",
 			Title:       "-",
@@ -119,7 +120,7 @@ func LinkToFeed(l mdl.Link) (*mdl.Channel, error) {
 		}
 		ps = append(ps, p)
 	}
-	cnl := mdl.Channel{
+	cnl := types.Channel{
 		CID:         l.CID,
 		SID:         l.SID,
 		Url:         l.URL,
@@ -154,8 +155,8 @@ func LinkToFeed(l mdl.Link) (*mdl.Channel, error) {
 }
 
 // LinksToFeeds returns a list of feeds given a list of links.
-func LinksToFeeds(links []*mdl.Link) ([]*mdl.Channel, error) {
-	var res []*mdl.Channel
+func LinksToFeeds(links []*types.Link) ([]*types.Channel, error) {
+	var res []*types.Channel
 	for _, f := range links {
 		c, err := LinkToFeed(*f)
 		if err != nil {
