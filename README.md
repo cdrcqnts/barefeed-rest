@@ -28,7 +28,6 @@ go run main.go
 
 ### TODO
 - Middleware request limit
-- Feed recommendation by keywords
 
 
 #### License
